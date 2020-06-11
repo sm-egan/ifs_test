@@ -18,12 +18,7 @@ class affineTransform:
     def transform(self, vec2d):
         return self._Wmat.dot(vec2d) + self._Wvec
     
-class IFS:
-    #def __init__(self, nWs=1):
-        #self._nWs = 1
-        #self._aTs = []
-        #self._weights = np.zeros(nWs)
-    
+class IFS:  
     #Constructor which uses existing affineTransform objects to construct the array of transformations
     # aTs can either be a single affineTransform, a list or array of affineTransforms
     def __init__(self, aTarr, nWs=1):
@@ -87,18 +82,20 @@ if __name__ == "__main__":
         weights = np.array([0.01, 0.07, 0.07, 0.85])
         
     elif image == "tree":
-        '''
+        # Original tree IFS
         aTparams = np.array([[0,0,0,0.5,0,0],
                              [0.1,0,0,0.1,0,0.2],
                              [0.42,-0.42,0.42,0.42,0,0.2],
                              [0.42,0.42,-0.42,0.42,0,0.2]
                              ])
         '''
+        # Modified IFS
         aTparams = np.array([[0.5,0,0,0.5,0,0],
                              [0.1,0,0,0.1,0,0.2],
-                             [0.2,-0.42,0.42,0.42,0,0.2],
+                             [0.42,-0.42,0.42,0.42,0,0.2],
                              [0.42,0.42,-0.42,0.42,0,0.2]
                              ])
+        '''
         
 
         weights = np.array([0.05, 0.15, 0.4, 0.4])
@@ -118,7 +115,8 @@ if __name__ == "__main__":
         
         aTparams = np.array([[r*math.cos(t), r*math.sin(t), r*math.sin(t), r*math.cos(t), -1/phi, 1]])
         weights = np.array([1.0])
-         
+       
+    # Construct an array of aTs for input into the IFS constructor
     for row in aTparams:
             aTarr = np.append(aTarr, np.array([affineTransform(row)]))
     ifs = IFS(aTarr, len(aTarr))
